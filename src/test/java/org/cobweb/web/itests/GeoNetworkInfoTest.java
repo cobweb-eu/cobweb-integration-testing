@@ -15,11 +15,27 @@ import java.net.URL;
  */
 public class GeoNetworkInfoTest extends GeoNetworkBaseTest {
     @Test
-    public void testCreateMetadata() {
+    public void testInfoGet() {
         try {
             String requestPath = "/public/eng/xml.info?type=site";
             XmlRequest request = new GeonetHttpRequestFactory().createXmlRequest(new URL(gnServiceURL + requestPath));
             Element response = request.execute();
+            Assert.assertNotNull(response);
+            Assert.assertEquals(response.getName(), "info");
+
+        } catch (Exception ex) {
+            Assert.fail(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testInfoPost() {
+        try {
+            String requestPath = "/public/eng/xml.info";
+            Element requestEl = new Element("request");
+            requestEl.addContent(new Element("type").setText("site"));
+            XmlRequest request = new GeonetHttpRequestFactory().createXmlRequest(new URL(gnServiceURL + requestPath));
+            Element response = request.execute(requestEl);
             Assert.assertNotNull(response);
             Assert.assertEquals(response.getName(), "info");
 
